@@ -1,30 +1,33 @@
 import React, { useEffect } from "react";
 import BookDetail from "../../components/BookDetail";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addToReadingList, loadCurrentBook, selectBook } from "./currentBookSlice";
+import { addToReadingList, loadCurrentBook, selectBook, selectIsLoadingBook } from "./currentBookSlice";
+import { ClipLoader } from "react-spinners";
 
-
-
-const BACKEND_API = process.env.REACT_APP_BACKEND_API;
-
- 
 const CurrentBook = () => {
   const book = useSelector(selectBook);
-  const dispatch = useDispatch();
-  
+  const dispatch = useDispatch()
+  const loading = useSelector(selectIsLoadingBook);
   const params = useParams();
   const bookId = params.id;
-  const img = `${BACKEND_API}/${book.imageLink}`
+ 
 
   useEffect(() => {
     dispatch(loadCurrentBook(bookId))
-  }, [bookId, dispatch]);
-
+  }, [dispatch, bookId]);
+  
+  if (loading) {
+    return (
+      <Box sx={{ textAlign: "center", color: "primary.main" }}>
+        <ClipLoader color="inherit" size={150} loading={true} />
+      </Box>
+    );
+  }
   return (
     <div>
-      <BookDetail book={book} img={img} />
+      {book && (<BookDetail book={book} />)}
 
       <Button variant="outlined" sx={{ width: "fit-content" }} onClick={() => dispatch(addToReadingList(book))}>
           Add to Reading List

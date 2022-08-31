@@ -10,6 +10,7 @@ import {
   CardActionArea,
   Typography,
   CardContent,
+  Grid
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +22,7 @@ import {
   selectTotalPage,
   selectBooks,
   selectSearchQuery,
-  setPageNum
+  setPageNum,
 } from "./allBooksSlice";
 
 import { useNavigate } from "react-router-dom";
@@ -38,7 +39,7 @@ const AllBooks = () => {
   const query = useSelector(selectSearchQuery);
 
   const dispatch = useDispatch();
-   
+
   const handlePageChange = (event, value) => {
     dispatch(setPageNum(value));
   };
@@ -49,8 +50,10 @@ const AllBooks = () => {
   };
 
   useEffect(() => {
-    !books && dispatch(loadAllBooks({ pageNum, limit, query }));
-  }, [books, dispatch, pageNum, limit, query]);
+   
+      dispatch(loadAllBooks({pageNum, limit, query}));
+    
+  }, [dispatch, pageNum, limit, query]);
 
   if (loading) {
     return (
@@ -60,44 +63,57 @@ const AllBooks = () => {
     );
   }
   return (
-    <div id="allbooks">
-      <PaginationBar totalPage={totalPage} pageNum={pageNum} handleChange={handlePageChange} />
+    <Stack justifyContent="center" alignItems="center">
+      <PaginationBar
+        totalPage={totalPage}
+        pageNum={pageNum}
+        handleChange={handlePageChange}
+      />
 
       {errorMessage && <Alert severity="danger">{errorMessage}</Alert>}
 
-      <Stack
+      {/* <Stack
         direction="row"
         spacing={2}
         justifyContent="space-around"
+        alignItems="space-evenly"
         flexWrap="wrap"
-      >
+        margin={3}
+
+      > */}
+      <Grid container spacing={3} p={1}>
         {books &&
           books.map((book) => (
+            <Grid key={book.id} item xs={12} sm={6} md={4} lg={3}>
             <Card
               key={book.id}
               onClick={() => handleClickBook(book.id)}
               sx={{
-                width: "12rem",
-                height: "27rem",
+                width: "15rem",
+                height: "30rem",
                 marginBottom: "2rem",
               }}
             >
               <CardActionArea>
                 <CardMedia
                   component="img"
-                  image={`${BACKEND_API}/${book.imageLink}`}
+                    image={`${BACKEND_API}/${book.imageLink}`}
+
                   alt={`${book.title}`}
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography gutterBottom variant="h4" component="div" fontSize={16} fontWeight="bold">
                     {`${book.title}`}
                   </Typography>
                 </CardContent>
               </CardActionArea>
-            </Card>
+              </Card>
+              </Grid>
           ))}
-      </Stack>
-    </div>
+        </Grid>
+    </Stack>
+    
+    // </Stack>
   );
 };
 

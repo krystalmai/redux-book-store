@@ -34,26 +34,29 @@ export const allBooksSlice = createSlice({
     builder
       .addCase(loadAllBooks.pending, (state) => {
         state.isLoading = true;
+       
       })
       .addCase(loadAllBooks.fulfilled, (state, action) => {
         state.isLoading = false;
         state.books = action.payload;
+        
       })
       .addCase(loadAllBooks.rejected, (state, action) => {
         state.isLoading = false;
         state.errorMessage = action.payload.error.message;
+        
       });
   },
 });
 
 export const { setPageNum, setSearchQuery } = allBooksSlice.actions;
 
-export const selectBooks = (state) => state.books;
-export const selectSearchQuery = (state) => state.searchQuery;
-export const selectTotalPage = (state) => state.totalPage;
-export const selectLimit = (state) => state.limit;
-export const selectPageNum = (state) => state.pageNum;
-export const selectErrorMessage = (state) => state.errorMessage;
-export const selectIsLoading = (state) => state.isLoading;
+export const selectBooks = (state) => state.allBooks.books;
+export const selectSearchQuery = (state) => state.allBooks.searchQuery;
+export const selectTotalPage = (state) => state.allBooks.totalPage;
+export const selectLimit = (state) => state.allBooks.limit;
+export const selectPageNum = (state) => state.allBooks.pageNum;
+export const selectErrorMessage = (state) => state.allBooks.errorMessage;
+export const selectIsLoading = (state) => state.allBooks.isLoading;
 
 export default allBooksSlice.reducer;
