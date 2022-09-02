@@ -1,11 +1,14 @@
 import api from "../../apiService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 export const loadAllBooks = createAsyncThunk(
   "allBooks/loadAllBooks",
-  async ({ pageNum, limit, query }) => {
-    let url = `/books?_page=${pageNum}&_limit=${limit}`;
-    if (query) url += `&q=${query}`;
+  async (arg, { getState }) => {
+    const state = getState();
+    let url = `/books?_page=${state.allBooks.pageNum}&_limit=${state.allBooks.limit}`;
+    if (state.allBooks.query) url += `&q=${state.allBooks.query}`;
+    console.log(url);
     const res = await api.get(url);
     return res.data;
   }
@@ -14,17 +17,17 @@ export const loadAllBooks = createAsyncThunk(
 export const allBooksSlice = createSlice({
   name: "allBooks",
   initialState: {
-    books: [],
+    books: null,
     searchQuery: "",
     totalPage: 10,
     limit: 10,
     pageNum: 1,
-    isLoading: false,
-    errorMessage: "",
+    isLoading: true,
   },
   reducers: {
     setPageNum: (state, action) => {
       state.pageNum = action.payload;
+      state.isLoading = true;
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
@@ -34,17 +37,14 @@ export const allBooksSlice = createSlice({
     builder
       .addCase(loadAllBooks.pending, (state) => {
         state.isLoading = true;
-       
       })
       .addCase(loadAllBooks.fulfilled, (state, action) => {
         state.isLoading = false;
         state.books = action.payload;
-        
       })
       .addCase(loadAllBooks.rejected, (state, action) => {
         state.isLoading = false;
-        state.errorMessage = action.payload.error.message;
-        
+        toast.error(action.error.message);
       });
   },
 });
@@ -56,7 +56,6 @@ export const selectSearchQuery = (state) => state.allBooks.searchQuery;
 export const selectTotalPage = (state) => state.allBooks.totalPage;
 export const selectLimit = (state) => state.allBooks.limit;
 export const selectPageNum = (state) => state.allBooks.pageNum;
-export const selectErrorMessage = (state) => state.allBooks.errorMessage;
 export const selectIsLoading = (state) => state.allBooks.isLoading;
 
 export default allBooksSlice.reducer;

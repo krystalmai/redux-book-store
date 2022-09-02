@@ -12,7 +12,9 @@ export const loadCurrentBook = createAsyncThunk(
 
 export const addToReadingList = createAsyncThunk(
   "currenBook/addToReadingList",
-  async (book) => {
+  async (book, { getState }) => {
+    console.log(book.id);
+
     await api.post(`/favorites`, book);
   }
 );
@@ -20,7 +22,7 @@ export const addToReadingList = createAsyncThunk(
 const currentBookSlice = createSlice({
   name: "currentBook",
   initialState: {
-    book: {},
+    book: undefined,
     isLoadingBook: false,
     isAddingBook: false,
   },
@@ -32,10 +34,11 @@ const currentBookSlice = createSlice({
       .addCase(loadCurrentBook.fulfilled, (state, action) => {
         state.isLoadingBook = false;
         state.book = action.payload;
+        console.log(state.book.id, state.book.imageLink);
       })
       .addCase(loadCurrentBook.rejected, (state, action) => {
         state.isLoadingBook = false;
-        state.errorMessage = action.payload.error.message;
+        toast.error(action.error.message);
       })
       .addCase(addToReadingList.pending, (state) => {
         state.isAddingBook = true;
@@ -45,7 +48,12 @@ const currentBookSlice = createSlice({
         toast.success("The book has been added to the reading list!");
       })
       .addCase(addToReadingList.rejected, (state, action) => {
-        toast.error(action.payload.error.message);
+        state.isAddingBook = false;
+        toast.error(
+          action.error.message === "Error: Insert failed, duplicate id"
+            ? "Duplicate book in reading list"
+            : action.error.message
+        );
       });
   },
 });

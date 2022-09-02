@@ -1,6 +1,17 @@
 {
   "favorites": [
     {
+      "author": "Unknown",
+      "country": "India/Iran/Iraq/Egypt/Tajikistan",
+      "imageLink": "images/one-thousand-and-one-nights.jpg",
+      "language": "Arabic",
+      "link": "https://en.wikipedia.org/wiki/One_Thousand_and_One_Nights\n",
+      "pages": 288,
+      "title": "One Thousand and One Nights",
+      "year": 1200,
+      "id": "BFECD288E75"
+    },
+    {
       "author": "Hans Christian Andersen",
       "country": "Denmark",
       "imageLink": "images/fairy-tales.jpg",
@@ -10,20 +21,6 @@
       "title": "Fairy tales",
       "year": 1836,
       "id": "A8770585A41"
-    },
-    {
-      "author": "Chinua Achebe",
-      "country": "Nigeria",
-      "imageLink": "images/things-fall-apart.jpg",
-      "language": "English",
-      "link": "https://en.wikipedia.org/wiki/Things_Fall_Apart\n",
-      "pages": 209,
-      "title": "Things Fall Apart",
-      "year": 1958,
-      "id": "8F627C92410"
-    },
-    {
-      "id": "q-jLWZ4"
     }
   ],
   "books": [

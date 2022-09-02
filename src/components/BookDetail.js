@@ -1,27 +1,23 @@
 import React from "react";
 import {
-  Card,
-  CardActionArea,
-  CardContent,
+
   CardMedia,
-  Grid,
   Stack,
   Typography,
 } from "@mui/material";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
-const BookDetail = (book) => {
+const BookDetail = ({ book }) => {
   return (
-    <Grid container spacing={2} p={4} mt={5} sx={{ border: "1px solid black" }}>
-      <Grid item md={4}>
-        <Card>
-          <CardActionArea>
+ 
+      <Stack alignItems="center" justifyContent="center" direction="row" flexWrap="wrap-reverse" gap={3}>
+       
             <CardMedia
               component="img"
               image={`${BACKEND_API}/${book.imageLink}`}
-              alt={`${book.title}`}
+            alt={`${book.title}`}
+            sx={{width: '15rem', marginTop:'3rem'}}
             />
-            <CardContent>
               <Stack>
                 <h2>{book.title}</h2>
                 <Typography variant="body1">
@@ -40,11 +36,10 @@ const BookDetail = (book) => {
                   <strong>Language:</strong> {book.language}
                 </Typography>
               </Stack>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-    </Grid>
+            
+        
+      </Stack>
+  
   );
 };
 
