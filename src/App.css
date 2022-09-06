@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.fade-enter {
+  opacity: 0;
+  
+}
+
+.fade-enter-active {
+  opacity: 1;
+
+  transition: opacity ease-in-out 1s;
+}
+.fade-exit {
+  opacity: 1;
+ 
+}
+.fade-exit-active {
+  opacity: 0.3;
+  
+  transition: opacity ease-out 1🇸
+}

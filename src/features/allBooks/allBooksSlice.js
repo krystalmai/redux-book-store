@@ -7,7 +7,7 @@ export const loadAllBooks = createAsyncThunk(
   async (arg, { getState }) => {
     const state = getState();
     let url = `/books?_page=${state.allBooks.pageNum}&_limit=${state.allBooks.limit}`;
-    if (state.allBooks.query) url += `&q=${state.allBooks.query}`;
+    if (state.allBooks.searchQuery) url += `&q=${state.allBooks.searchQuery}`;
     console.log(url);
     const res = await api.get(url);
     return res.data;
@@ -18,7 +18,7 @@ export const allBooksSlice = createSlice({
   name: "allBooks",
   initialState: {
     books: null,
-    searchQuery: "",
+    searchQuery: null,
     totalPage: 10,
     limit: 10,
     pageNum: 1,
@@ -40,6 +40,7 @@ export const allBooksSlice = createSlice({
       })
       .addCase(loadAllBooks.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.searchQuery = null;
         state.books = action.payload;
       })
       .addCase(loadAllBooks.rejected, (state, action) => {
